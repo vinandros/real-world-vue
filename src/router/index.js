@@ -20,8 +20,9 @@ const routes = [
     //   import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },
   {
-    path: '/event/123',
+    path: '/event/:id',
     name: 'EventDetails',
+    props: true,
     component: EventDetails,
   },
 ]
