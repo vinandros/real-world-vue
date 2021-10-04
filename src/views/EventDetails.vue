@@ -9,20 +9,21 @@
 <script>
 import EventService from '../services/eventService'
 export default {
-    props:['id'],
-    data() {
-        return {
-            event: null,
-        }
+  props: ['id'],
+  data() {
+    return {
+      event: null,
+    }
   },
   created() {
-      
-      EventService.getEvent(this.id).then((res) => {
-          this.event = res.data
-      }).catch((error) => {
-          console.log(error)
+    EventService.getEvent(this.id)
+      .then((res) => {
+        this.event = res.data
+      })
+      .catch((error) => {
+        console.log(error)
       })
     // fetch event (by id) and set local event data
-  }
+  },
 }
 </script>
