@@ -10,15 +10,15 @@
         :to="{ name: 'EventList', query: { page: page - 1 } }"
         >&#60; Previous</router-link
       >
-      <router-link 
-        v-for="( page, index ) in pages"
-        :key="index + 1 "
+      <router-link
+        v-for="(page, index) in pages"
+        :key="index + 1"
         :to="{ name: 'EventList', query: { page: index + 1 } }"
         class="pages-link"
         active-class="active-page"
-        >{{index + 1}}</router-link
+        >{{ index + 1 }}</router-link
       >
-      
+
       <router-link
         id="page-next"
         rel="next"
@@ -46,7 +46,7 @@ export default {
       events: [],
       totalEvents: 0,
       totalPages: 0,
-      currentPage: 0
+      currentPage: 0,
     }
   },
   created() {
@@ -59,6 +59,14 @@ export default {
         })
         .catch((error) => {
           console.log(error)
+          if (error.response && error.response.status === 404) {
+            this.$router.push({
+              name: '404Resource',
+              params: { resource: 'event' },
+            })
+          } else {
+            this.$router.push({ name: 'NetworkError' })
+          }
         })
     })
   },
@@ -66,16 +74,15 @@ export default {
     hasNextPage() {
       return this.page < this.totalPages
     },
-    pages(){
+    pages() {
       return [...Array(this.totalPages).keys()]
     },
-    active(index){
-      if(this.page === index){
-        return{ textDecoration: "underline"}
+    active(index) {
+      if (this.page === index) {
+        return { textDecoration: 'underline' }
       }
-      return ""
-    }
-    
+      return ''
+    },
   },
 }
 </script>
@@ -91,13 +98,13 @@ export default {
   width: 290px;
 }
 
-.active-page{
+.active-page {
   text-decoration: underline;
 }
 
-.pages-link{
+.pages-link {
   color: #2c3e50;
-  margin:0 10px;
+  margin: 0 10px;
   text-decoration: none;
 }
 
@@ -106,7 +113,6 @@ export default {
   flex: 1;
   text-decoration: none;
   color: #2c3e50;
- 
 }
 
 #page-next {
