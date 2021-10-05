@@ -34,7 +34,7 @@
 // @ is an alias to /src
 import EventCard from '@/components/EventCard.vue'
 import EventService from '../services/eventService'
-import { watchEffect } from 'vue'
+import NProgress from 'nprogress'
 export default {
   name: 'Home',
   props: ['page'],
@@ -49,26 +49,53 @@ export default {
       currentPage: 0,
     }
   },
-  created() {
-    watchEffect(() => {
-      EventService.getEvents(2, this.page)
+  beforeRouteEnter(routeTo, routeFrom, next) {
+    NProgress.start()
+      EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
         .then((res) => {
-          this.events = res.data
-          this.totalEvents = res.headers['x-total-count']
-          this.totalPages = Math.ceil(this.totalEvents / 2)
+          next((com) => {
+            com.events = res.data
+            com.totalEvents = res.headers['x-total-count']
+            com.totalPages = Math.ceil(com.totalEvents / 2)
+          })
         })
         .catch((error) => {
           console.log(error)
           if (error.response && error.response.status === 404) {
-            this.$router.push({
+            next({
               name: '404Resource',
               params: { resource: 'event' },
             })
           } else {
-            this.$router.push({ name: 'NetworkError' })
+            next({ name: 'NetworkError' })
           }
+        }).finally(() => {
+          NProgress.done()
         })
-    })
+  },
+  beforeRouteUpdate(routeTo) {
+    NProgress.start()
+      EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
+        .then((res) => {
+          
+            this.events = res.data
+            this.totalEvents = res.headers['x-total-count']
+            this.totalPages = Math.ceil(this.totalEvents / 2)
+         
+        })
+        .catch((error) => {
+          console.log(error)
+          if (error.response && error.response.status === 404) {
+           return {
+              name: '404Resource',
+              params: { resource: 'event' },
+            }
+          } else {
+            return { name: 'NetworkError' }
+          }
+        }).finally(() => {
+          NProgress.done()
+        })
   },
   computed: {
     hasNextPage() {
