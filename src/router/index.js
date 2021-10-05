@@ -24,7 +24,7 @@ const routes = [
     //   import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },
   {
-    path: '/event/:id',
+    path: '/events/:id',
     name: 'EventLayout',
     props: true,
     component: EventLayout,
@@ -45,6 +45,37 @@ const routes = [
         component: EventRegister,
       },
     ],
+  },
+  {
+    path: '/event/:afterEvent(.*)',
+    redirect: (to) => {
+      // path solution
+      return {
+        path: '/events/' + to.params.afterEvent,
+      }
+      // children solution
+      // id can be pass without params, this is do it, auto
+      // like it is doing into the children section for each nested route
+      // return {
+      //   name: 'EventDetails',
+      //   params: { id: to.params.id },
+      // }
+    },
+    // children solution
+    // children: [
+    //   {
+    //     path: 'register',
+    //     redirect: () => ({
+    //       name: 'EventRegister',
+    //     }),
+    //   },
+    //   {
+    //     path: 'edit',
+    //     redirect: () => ({
+    //       name: 'EventEdit',
+    //     }),
+    //   },
+    // ],
   },
 ]
 

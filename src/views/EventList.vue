@@ -67,7 +67,6 @@ export default {
       return this.page < this.totalPages
     },
     pages(){
-      console.log( [...Array(this.totalPages).keys()])
       return [...Array(this.totalPages).keys()]
     },
     active(index){
