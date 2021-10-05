@@ -4,6 +4,7 @@ import About from '../views/About.vue'
 import EventDetails from '../views/event/Details.vue'
 import EventEdit from '../views/event/Edit.vue'
 import EventRegister from '../views/event/Register.vue'
+import EventLayout from '../views/event/Layout.vue'
 
 const routes = [
   {
@@ -24,21 +25,26 @@ const routes = [
   },
   {
     path: '/event/:id',
-    name: 'EventDetails',
+    name: 'EventLayout',
     props: true,
-    component: EventDetails,
-  },
-  {
-    path: '/event/:id/edit',
-    name: 'EventEdit',
-    props: true,
-    component: EventEdit,
-  },
-  {
-    path: '/event/:id/register',
-    name: 'EventRegister',
-    props: true,
-    component: EventRegister,
+    component: EventLayout,
+    children: [
+      {
+        path: '',
+        name: 'EventDetails',
+        component: EventDetails,
+      },
+      {
+        path: 'edit',
+        name: 'EventEdit',
+        component: EventEdit,
+      },
+      {
+        path: 'register',
+        name: 'EventRegister',
+        component: EventRegister,
+      },
+    ],
   },
 ]
 
