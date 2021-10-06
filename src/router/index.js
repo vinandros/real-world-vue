@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import EventList from '../views/EventList.vue'
-import About from '../views/About.vue'
+const About = () => import(/* webpackChunkName: "about" */ '../views/About.vue')
 import EventDetails from '../views/event/Details.vue'
 import EventEdit from '../views/event/Edit.vue'
 import EventRegister from '../views/event/Register.vue'
@@ -122,6 +122,15 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return {
+        top: 0,
+      }
+    }
+  },
 })
 
 router.beforeEach(() => {
