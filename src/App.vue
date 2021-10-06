@@ -1,18 +1,18 @@
 <template>
   <div id="nav">
-    <div id="flashMessage" v-if="GStore.flashMessage">{{ GStore.flashMessage}}</div>
+    <div id="flashMessage" v-if="GStore.flashMessage">
+      {{ GStore.flashMessage }}
+    </div>
     <router-link :to="{ name: 'EventList' }">Events</router-link> |
     <router-link :to="{ name: 'About' }">About</router-link>
   </div>
   <router-view />
 </template>
 <script>
-
 export default {
-  inject:['GStore']
+  inject: ['GStore'],
 }
 </script>
-
 
 <style>
 @keyframes yellowfade {

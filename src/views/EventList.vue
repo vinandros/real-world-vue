@@ -34,7 +34,6 @@
 // @ is an alias to /src
 import EventCard from '@/components/EventCard.vue'
 import EventService from '../services/eventService'
-import NProgress from 'nprogress'
 export default {
   name: 'Home',
   props: ['page'],
@@ -50,52 +49,44 @@ export default {
     }
   },
   beforeRouteEnter(routeTo, routeFrom, next) {
-    NProgress.start()
-      EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
-        .then((res) => {
-          next((com) => {
-            com.events = res.data
-            com.totalEvents = res.headers['x-total-count']
-            com.totalPages = Math.ceil(com.totalEvents / 2)
+    EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
+      .then((res) => {
+        next((com) => {
+          com.events = res.data
+          com.totalEvents = res.headers['x-total-count']
+          com.totalPages = Math.ceil(com.totalEvents / 2)
+        })
+      })
+      .catch((error) => {
+        console.log(error)
+        if (error.response && error.response.status === 404) {
+          next({
+            name: '404Resource',
+            params: { resource: 'event' },
           })
-        })
-        .catch((error) => {
-          console.log(error)
-          if (error.response && error.response.status === 404) {
-            next({
-              name: '404Resource',
-              params: { resource: 'event' },
-            })
-          } else {
-            next({ name: 'NetworkError' })
-          }
-        }).finally(() => {
-          NProgress.done()
-        })
+        } else {
+          next({ name: 'NetworkError' })
+        }
+      })
   },
-  beforeRouteUpdate(routeTo) {
-    NProgress.start()
-      EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
-        .then((res) => {
-          
-            this.events = res.data
-            this.totalEvents = res.headers['x-total-count']
-            this.totalPages = Math.ceil(this.totalEvents / 2)
-         
-        })
-        .catch((error) => {
-          console.log(error)
-          if (error.response && error.response.status === 404) {
-           return {
-              name: '404Resource',
-              params: { resource: 'event' },
-            }
-          } else {
-            return { name: 'NetworkError' }
+  async beforeRouteUpdate(routeTo) {
+    return EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
+      .then((res) => {
+        this.events = res.data
+        this.totalEvents = res.headers['x-total-count']
+        this.totalPages = Math.ceil(this.totalEvents / 2)
+      })
+      .catch((error) => {
+        console.log(error)
+        if (error.response && error.response.status === 404) {
+          return {
+            name: '404Resource',
+            params: { resource: 'event' },
           }
-        }).finally(() => {
-          NProgress.done()
-        })
+        } else {
+          return { name: 'NetworkError' }
+        }
+      })
   },
   computed: {
     hasNextPage() {
