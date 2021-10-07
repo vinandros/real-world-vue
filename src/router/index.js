@@ -9,7 +9,6 @@ import NotFound from '../views/NotFound.vue'
 import EventCreate from '../views/event/Create.vue'
 import NetworkError from '../views/NetworkError.vue'
 import NProgress from 'nprogress'
-import EventService from '@/services/eventService'
 import store from '../store/index'
 
 const routes = [
@@ -40,22 +39,8 @@ const routes = [
     props: true,
     component: EventLayout,
     beforeEnter: (to) => {
-      return EventService.getEvent(to.params.id)
-        .then((res) => {
-          store.commit('SET_EVENT', res.data)
-        })
-        .catch((error) => {
-          console.log(error)
-          if (error.response && error.response.status === 404) {
-            return {
-              name: '404Resource',
-              params: { resource: 'event' },
-            }
-          } else {
-            return { name: 'NetworkError' }
-          }
-        })
-      // fetch event (by id) and set local event data
+      const id = to.params.id
+      return store.dispatch('fetchEvent', id)
     },
     children: [
       {

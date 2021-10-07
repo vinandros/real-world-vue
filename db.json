@@ -31,16 +31,7 @@
       "organizer": "Carey Wales"
     },
     {
-      "id": "efbd6ba2-b267-40ca-8b61-ff2da17249b2",
-      "category": "nature",
-      "title": "nature",
-      "description": "nature",
-      "location": "nature",
-      "date": "nature",
-      "time": "nature"
-    },
-    {
-      "id": "202e6bba-3177-40f5-af43-ecbd2471c774",
+      "id": "004b6c37-8d5b-492c-bf52-1ea1286dd086",
       "category": "education",
       "title": "education",
       "description": "education",
@@ -49,13 +40,13 @@
       "time": "education"
     },
     {
-      "id": "8b8c1f49-def4-45af-aa44-61fb7f887ce2",
-      "category": "food",
-      "title": "food",
-      "description": "food",
-      "location": "food",
-      "date": "food",
-      "time": "food"
+      "id": "e807c652-ccda-4222-9978-8e961132b660",
+      "category": "education",
+      "title": "education",
+      "description": "education",
+      "location": "education",
+      "date": "education",
+      "time": "education"
     }
   ]
 }

@@ -46,7 +46,6 @@
 
 <script>
 import { v4 as uuidv4 } from 'uuid'
-import EventService from '@/services/eventService'
 export default {
   data() {
     return {
@@ -80,40 +79,8 @@ export default {
         id: uuidv4(),
         organizer: this.$store.state.user,
       }
-      EventService.postEvent(event)
-        .then((res) => {
-          if (res.status === 201 || res.status === 200) {
-            this.$store.commit('ADD_NEW_EVENT', event)
-            this.$store.commit('SET_FLASH_MESSAGE', 'Event added successfully!')
-            setTimeout(() => {
-               this.$store.commit('SET_FLASH_MESSAGE', '')
-               this.$router.push({
-                name: 'EventDetails',
-                params: { id: event.id },
-              })
-            }, 3000);
-           
-          } else {
-            this.$store.commit('SET_FLASH_MESSAGE', 'Something went wrong!')
-            setTimeout(() => {
-              this.$store.commit('SET_FLASH_MESSAGE', '')
-              this.$router.push({
-                name: 'EventDetails',
-                params: { id: event.id },
-              })
-            }, 3000)
-          }
-        })
-        .catch((error) => {
-          if (error.response && error.response.status === 404) {
-            this.$router.push({
-              name: '404Resource',
-              params: { resource: 'event' },
-            })
-          } else {
-            this.$router.push({ name: 'NetworkError' })
-          }
-        })
+      this.$store.dispatch('postEvent', event)
+      
     },
   },
 }
