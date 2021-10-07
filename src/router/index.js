@@ -6,10 +6,11 @@ import EventEdit from '../views/event/Edit.vue'
 import EventRegister from '../views/event/Register.vue'
 import EventLayout from '../views/event/Layout.vue'
 import NotFound from '../views/NotFound.vue'
+import EventCreate from '../views/event/Create.vue'
 import NetworkError from '../views/NetworkError.vue'
 import NProgress from 'nprogress'
 import EventService from '@/services/eventService'
-import GStore from '../store/index'
+import store from '../store/index'
 
 const routes = [
   {
@@ -29,6 +30,11 @@ const routes = [
     //   import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },
   {
+    path: '/event/create',
+    name: 'EventCreate',
+    component: EventCreate,
+  },
+  {
     path: '/events/:id',
     name: 'EventLayout',
     props: true,
@@ -36,7 +42,7 @@ const routes = [
     beforeEnter: (to) => {
       return EventService.getEvent(to.params.id)
         .then((res) => {
-          GStore.event = res.data
+          store.commit('SET_EVENT', res.data)
         })
         .catch((error) => {
           console.log(error)

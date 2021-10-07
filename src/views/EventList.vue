@@ -1,7 +1,11 @@
 <template>
   <div class="events">
     <h1>Events for Good</h1>
-    <EventCard v-for="event in events" :key="event.id" :event="event" />
+    <EventCard
+      v-for="event in $store.state.events"
+      :key="event.id"
+      :event="event"
+    />
     <div class="pagination">
       <router-link
         id="page-prev"
@@ -52,6 +56,7 @@ export default {
     EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
       .then((res) => {
         next((com) => {
+          com.$store.commit('SET_EVENTS', res.data)
           com.events = res.data
           com.totalEvents = res.headers['x-total-count']
           com.totalPages = Math.ceil(com.totalEvents / 2)
@@ -72,7 +77,7 @@ export default {
   async beforeRouteUpdate(routeTo) {
     return EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
       .then((res) => {
-        this.events = res.data
+        this.$store.commit('SET_EVENTS', res.data)
         this.totalEvents = res.headers['x-total-count']
         this.totalPages = Math.ceil(this.totalEvents / 2)
       })
