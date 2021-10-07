@@ -27,20 +27,12 @@ export default createStore({
   },
   actions: {
     fetchEvent({ commit }, id) {
-      EventService.getEvent(id)
+      return EventService.getEvent(id)
         .then((res) => {
           commit('SET_EVENT', res.data)
         })
         .catch((error) => {
-          console.log(error)
-          // if (error.response && error.response.status === 404) {
-          //   return {
-          //     name: '404Resource',
-          //     params: { resource: 'event' },
-          //   }
-          // } else {
-          //   return { name: 'NetworkError' }
-          // }
+          throw error
         })
     },
     fetchEvents({ commit }, { per_page, page }) {
@@ -52,51 +44,21 @@ export default createStore({
           commit('SET_TOTAL_PAGES', totalPages)
         })
         .catch((error) => {
-          console.log(error)
-          //   if (error.response && error.response.status === 404) {
-          //     next({
-          //       name: '404Resource',
-          //       params: { resource: 'event' },
-          //     })
-          //   } else {
-          //     next({ name: 'NetworkError' })
-          //   }
+          throw error
         })
     },
     postEvent({ commit, dispatch }, event) {
-      EventService.postEvent(event)
+      return EventService.postEvent(event)
         .then((res) => {
           if (res.status === 201 || res.status === 200) {
             commit('ADD_NEW_EVENT', event)
             dispatch('setFlashMessage', 'Event added successfully!')
-            // setTimeout(() => {
-            //   this.$store.commit('SET_FLASH_MESSAGE', '')
-            //   this.$router.push({
-            //     name: 'EventDetails',
-            //     params: { id: event.id },
-            //   })
-            // }, 3000)
           } else {
             dispatch('SET_FLASH_MESSAGE', 'Something went wrong!')
-            // setTimeout(() => {
-            //   this.$store.commit('SET_FLASH_MESSAGE', '')
-            //   this.$router.push({
-            //     name: 'EventDetails',
-            //     params: { id: event.id },
-            //   })
-            // }, 3000)
           }
         })
         .catch((error) => {
-          console.log(error)
-          // if (error.response && error.response.status === 404) {
-          //   this.$router.push({
-          //     name: '404Resource',
-          //     params: { resource: 'event' },
-          //   })
-          // } else {
-          //   this.$router.push({ name: 'NetworkError' })
-          // }
+          throw error
         })
     },
     setFlashMessage({ commit }, message) {

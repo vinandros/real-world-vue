@@ -14,7 +14,7 @@ export default {
     return apiClient.get(`/events?_limit=${per_page}&_page=${page}`)
   },
   getEvent(eventID) {
-    return apiClient.get(`/events/${eventID}`)
+    return apiClient.get(`/evendts/${eventID}`)
   },
   postEvent(event) {
     return apiClient.post(`/events`, event)

@@ -53,13 +53,31 @@ export default {
     next((com) => {
        const per_page = 2;
        const page = parseInt(routeTo.query.page) || 1;
-       com.$store.dispatch('fetchEvents',{ per_page, page })
+       com.$store.dispatch('fetchEvents',{ per_page, page }).catch((error) => {
+           if (error.response && error.response.status === 404) {
+              com.$router.push({
+                name: '404Resource',
+                params: { resource: 'events' },
+              })
+            } else {
+              com.$router.push({ name: 'NetworkError' })
+            }
+       });
     })
   },
   async beforeRouteUpdate(routeTo) {
-      const per_page = 2
-      const page = parseInt(routeTo.query.page) || 1;
-      return this.$store.dispatch('fetchEvents', { per_page, page })
+    const per_page = 2
+    const page = parseInt(routeTo.query.page) || 1;
+    return this.$store.dispatch('fetchEvents', { per_page, page }).catch((error) => {
+          if (error.response && error.response.status === 404) {
+            this.$router.push({
+              name: '404Resource',
+              params: { resource: 'events' },
+            })
+          } else {
+            this.$router.push({ name: 'NetworkError' })
+          }
+      });
   },
   computed: {
     hasNextPage() {

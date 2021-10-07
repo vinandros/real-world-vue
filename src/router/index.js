@@ -38,9 +38,19 @@ const routes = [
     name: 'EventLayout',
     props: true,
     component: EventLayout,
-    beforeEnter: (to) => {
+    beforeEnter: async (to) => {
       const id = to.params.id
-      return store.dispatch('fetchEvent', id)
+      return store.dispatch('fetchEvent', id).catch((error) => {
+        console.log('error', error)
+        if (error.response && error.response.status === 404) {
+          return {
+            name: '404Resource',
+            params: { resource: 'event' },
+          }
+        } else {
+          return { name: 'NetworkError' }
+        }
+      })
     },
     children: [
       {

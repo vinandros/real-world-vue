@@ -79,7 +79,18 @@ export default {
         id: uuidv4(),
         organizer: this.$store.state.user,
       }
-      this.$store.dispatch('postEvent', event)
+      this.$store.dispatch('postEvent', event).then(() => {
+        this.$router.push({ name: 'EventDetails', params: { id: event.id }})
+      }).catch((error) => {
+         if (error.response && error.response.status === 404) {
+            this.$router.push({
+              name: '404Resource',
+              params: { resource: 'event' },
+            })
+          } else {
+            this.$router.push({ name: 'NetworkError' })
+          }
+      })
       
     },
   },
