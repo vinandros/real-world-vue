@@ -1,5 +1,6 @@
 import axios from 'axios'
-
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
+console.log(process.env.NODE_ENV)
 const apiClient = axios.create({
   baseURL: 'http://localhost:3000',
   withCredentials: false,
@@ -14,7 +15,7 @@ export default {
     return apiClient.get(`/events?_limit=${per_page}&_page=${page}`)
   },
   getEvent(eventID) {
-    return apiClient.get(`/evendts/${eventID}`)
+    return apiClient.get(`/events/${eventID}`)
   },
   postEvent(event) {
     return apiClient.post(`/events`, event)
