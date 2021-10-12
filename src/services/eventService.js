@@ -1,8 +1,6 @@
 import axios from 'axios'
-require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
-console.log(process.env.NODE_ENV)
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: process.env.VUE_APP_SERVER_URL,
   withCredentials: false,
   headers: {
     Accept: 'application/json',
